@@ -5,39 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tennis First Cup — Положение турнира</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    /* ========== Сброс отступов и базовые стили ========== */
+    * {
       margin: 0;
-      padding: 1em;
-      line-height: 1.6;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
       background-color: #e07b39; /* Clay court style */
-      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     .container {
       max-width: 800px;
+      width: 100%;
       margin: auto;
       background: #ffffffcc; /* semi-transparent white */
       padding: 1.5em;
       border-radius: 12px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      overflow: auto;
+      color: #333;
     }
 
     h1, h2 {
       color: #1967d2;
     }
-
     h1 {
       font-size: 1.8em;
+      margin-bottom: 0.5em;
     }
-
     h2 {
       font-size: 1.4em;
       margin-top: 1.2em;
+      margin-bottom: 0.5em;
     }
 
     ul {
       padding-left: 1.2em;
+      margin-bottom: 1em;
     }
 
     .sponsor-box {
@@ -49,18 +60,23 @@
     }
 
     @media (max-width: 600px) {
-      h1 {
-        font-size: 1.5em;
-      }
-
-      h2 {
-        font-size: 1.2em;
-      }
-
-      body {
-        padding: 0.5em;
-      }
+      h1 { font-size: 1.5em; }
+      h2 { font-size: 1.2em; }
+      body { padding: 0.5em; }
     }
+
+    /* ========== Участники ========== */
+    #participants {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 1em;
+    }
+    #participants li {
+      margin: 0.5em 0;
+      line-height: 1.4;
+    }
+    .icon-kaspi { margin-left: 0.3em; }
+    .icon-cash { margin-left: 0.3em; }
   </style>
 </head>
 <body>
@@ -74,7 +90,7 @@
       <li><strong>Место:</strong> Теннисный клуб «Максат» (грунт)</li>
       <li><strong>Возраст:</strong> 18+</li>
       <li><strong>Уровень:</strong> от NTRP 2.5 до 3.5</li>
-      <li><strong>Организаторы:</strong> Асхат (+7 747 199 21 23), Бекарыс (+7 777 381 10 89)</li>
+      <li><strong>Организаторы:</strong> Асхат — +7 747 199 21 23, Бекарыс — +7 777 381 10 89</li>
     </ul>
 
     <h2>📌 Формат турнира</h2>
@@ -85,7 +101,7 @@
       <li>3–4 место → плей-офф «Фьючерс»</li>
       <li>5-е место — выбытие</li>
     </ul>
-    <p><strong>Формат всех матчей:</strong> до 4 геймов. При счете 3:3 — решающий гейм.</p>
+    <p><strong>Формат всех матчей:</strong> до 4 геимов. При счёте 3:3 — решающий гейм.</p>
 
     <h2>⚖️ Правила и дисциплина</h2>
     <ul>
@@ -103,31 +119,30 @@
     </ul>
 
     <div class="sponsor-box">
-      <strong>🎁 Призы предоставлены спонсором — компанией <span style="color:#e65100;">Technifibre</span>:</strong>
+      <strong>🎁 Призы от спонсора — компании Technifibre:</strong>
       <ul>
-        <li>Все призовые места получают <strong>сертификаты Technifibre</strong> на теннисную продукцию</li>
-        <li>Каждый призёр, включая 3 место в Фьючерс-сетке, получает <strong>фирменное полотенце Technifibre</strong></li>
+        <li>Все призовые места получают <strong>сертификаты</strong> на теннисную продукцию</li>
+        <li>Каждый призёр, включая 3-е место Фьючерс, получает <strong>полотенце</strong> Technifibre</li>
       </ul>
     </div>
 
     <p><strong>Мастерс:</strong></p>
     <ul>
-      <li>🥇 1 место — сертификат на 50 000 ₸</li>
-      <li>🥈 2 место — сертификат на 30 000 ₸</li>
-      <li>🥉 3 место — сертификат на 20 000 ₸</li>
+      <li>🥇 1-е место — сертификат 50 000 ₸</li>
+      <li>🥈 2-е место — сертификат 30 000 ₸</li>
+      <li>🥉 3-е место — сертификат 20 000 ₸</li>
     </ul>
 
     <p><strong>Фьючерс:</strong></p>
     <ul>
-      <li>🥇 1 место — сертификат на 25 000 ₸</li>
-      <li>🥈 2 место — сертификат на 15 000 ₸</li>
-      <li>🏅 3 место — фирменное полотенце Technifibre</li>
+      <li>🥇 1-е место — сертификат 25 000 ₸</li>
+      <li>🥈 2-е место — сертификат 15 000 ₸</li>
+      <li>🏅 3-е место — полотенце Technifibre</li>
     </ul>
 
     <h2>📸 Фото и видео</h2>
     <div class="sponsor-box">
-      📷 Во время турнира будет работать <strong>мобилограф</strong>, который подготовит <strong>фото- и видеоотчёт</strong>.  
-      Участники получат памятные кадры, а лучшие моменты — в итоговом ролике!
+      Во время турнира будет работать <strong>мобилограф</strong>, который сделает <strong>фото- и видеоотчёт</strong>. Участники получат памятные кадры и итоговый ролик.
     </div>
 
     <h2>📝 Регистрация</h2>
@@ -136,6 +151,53 @@
       <li>WhatsApp: Асхат — +7 747 199 21 23, Бекарыс — +7 777 381 10 89</li>
       <li>Количество участников ограничено — <strong>20 человек</strong></li>
     </ul>
+
+    <h2>👥 Список участников</h2>
+    <ul id="participants">
+      <li>Загрузка...</li>
+    </ul>
   </div>
+
+  <script>
+    (function(){
+      const SHEET_ID = '1-bu83d91x0RGodxCtpYEIUffjk8OUZiYWFofUXBCefI';
+      const GID      = '0';
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}` +
+                     `/export?format=csv&gid=${GID}`;
+
+      fetch(csvUrl)
+        .then(res => res.ok ? res.text() : Promise.reject(res.statusText))
+        .then(text => {
+          const rows = text.trim().split('\n').map(r => r.split(','));
+          const header = rows.shift().map(h => h.trim().replace(/"/g,''));
+          const idxName   = header.indexOf('Имя');
+          const idxNumber = header.indexOf('Номер');
+          const idxFee    = header.indexOf('Взносы');
+          const ul = document.getElementById('participants');
+          ul.innerHTML = '';
+          rows.forEach(cells => {
+            const name   = cells[idxName]   || '';
+            const number = cells[idxNumber] || '';
+            const fee    = cells[idxFee]    || '';
+            let icon = '';
+            if (/Kaspi/i.test(fee)) {
+              icon = '<span class="icon-kaspi">🏦</span>';
+            } else if (/Нал/i.test(fee)) {
+              icon = '<span class="icon-cash">💵</span>';
+            } else {
+              icon = ' ' + fee;
+            }
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${name}</strong> — ${number}${icon}`;
+            ul.appendChild(li);
+          });
+        })
+        .catch(err => {
+          const ul = document.getElementById('participants');
+          ul.innerHTML = `<li>Не удалось загрузить список участников</li>`;
+          console.error(err);
+        });
+    })();
+  </script>
 </body>
 </html>
