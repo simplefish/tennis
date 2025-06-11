@@ -29,8 +29,9 @@
       padding: 1.5em;
       border-radius: 12px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      overflow: auto;
       color: #333;
+      overflow-y: auto;
+      max-height: 100%;
     }
 
     h1, h2 {
@@ -65,7 +66,7 @@
       body { padding: 0.5em; }
     }
 
-    /* ========== Участники ========== */
+    /* ========== Список участников ========== */
     #participants {
       list-style: none;
       padding-left: 0;
@@ -76,7 +77,7 @@
       line-height: 1.4;
     }
     .icon-kaspi { margin-left: 0.3em; }
-    .icon-cash { margin-left: 0.3em; }
+    .icon-cash  { margin-left: 0.3em; }
   </style>
 </head>
 <body>
@@ -108,7 +109,7 @@
       <li>Судейство по запросу</li>
       <li>Каждые 5 минут опоздания — минус 1 гейм</li>
       <li>После 20 минут опоздания — техническое поражение</li>
-      <li>Отказ от участия — не позже, чем за 2 дня до турнира</li>
+      <li>Отказ от участия — не позже чем за 2 дня до турнира</li>
       <li>Обязателен спортивный этикет и уважение к соперникам</li>
     </ul>
 
@@ -142,7 +143,7 @@
 
     <h2>📸 Фото и видео</h2>
     <div class="sponsor-box">
-      Во время турнира будет работать <strong>мобилограф</strong>, который сделает <strong>фото- и видеоотчёт</strong>. Участники получат памятные кадры и итоговый ролик.
+      Во время турнира будет работать <strong>мобилограф</strong>, который сделает фото- и видеоотчёт. Участники получат памятные кадры и итоговый ролик.
     </div>
 
     <h2>📝 Регистрация</h2>
@@ -162,39 +163,50 @@
     (function(){
       const SHEET_ID = '1-bu83d91x0RGodxCtpYEIUffjk8OUZiYWFofUXBCefI';
       const GID      = '0';
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}` +
-                     `/export?format=csv&gid=${GID}`;
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
 
       fetch(csvUrl)
         .then(res => res.ok ? res.text() : Promise.reject(res.statusText))
         .then(text => {
+          // парсим CSV
           const rows = text.trim().split('\n').map(r => r.split(','));
-          const header = rows.shift().map(h => h.trim().replace(/"/g,''));
+          const header = rows.shift().map(h => h.replace(/"/g,'').trim());
           const idxName   = header.indexOf('Имя');
           const idxNumber = header.indexOf('Номер');
           const idxFee    = header.indexOf('Взносы');
           const ul = document.getElementById('participants');
           ul.innerHTML = '';
+
+          let count = 1;
           rows.forEach(cells => {
-            const name   = cells[idxName]   || '';
-            const number = cells[idxNumber] || '';
-            const fee    = cells[idxFee]    || '';
+            const name   = (cells[idxName]   || '').trim();
+            const number = (cells[idxNumber] || '').trim();
+            const fee    = (cells[idxFee]    || '').trim();
+            if (!name && !number) return;  // пропустить пустые
+
             let icon = '';
-            if (/Kaspi/i.test(fee)) {
+            if (!fee) {
+              icon = ' ⌛';               // платёж не сделан
+            } else if (/Kaspi/i.test(fee)) {
               icon = '<span class="icon-kaspi">🏦</span>';
             } else if (/Нал/i.test(fee)) {
               icon = '<span class="icon-cash">💵</span>';
             } else {
               icon = ' ' + fee;
             }
+
             const li = document.createElement('li');
-            li.innerHTML = `<strong>${name}</strong> — ${number}${icon}`;
+            li.innerHTML = `${count++}. <strong>${name}</strong> — ${number}${icon}`;
             ul.appendChild(li);
           });
+
+          if (count === 1) {
+            ul.innerHTML = '<li>Список участников пуст</li>';
+          }
         })
         .catch(err => {
           const ul = document.getElementById('participants');
-          ul.innerHTML = `<li>Не удалось загрузить список участников</li>`;
+          ul.innerHTML = '<li>Не удалось загрузить список участников</li>';
           console.error(err);
         });
     })();
