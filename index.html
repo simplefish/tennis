@@ -23,6 +23,17 @@
     h1 { font-size: 1.8em; margin-bottom: .5em; }
     h2 { font-size: 1.4em; margin: 1.2em 0 .5em; }
     ul { padding-left: 1.2em; margin-bottom: 1em; }
+    /* убираем маркеры у всех списков, кроме #participants */
+    ul:not(#participants) {
+      list-style: none;
+      padding-left: 1.2em; /* сохраняем отступы, если нужно */
+    }
+    
+    /* возвращаем классические маркеры только для списка участников */
+    #participants {
+      list-style: disc;
+      padding-left: 1.2em;
+    }
     .sponsor-box {
       background: #fff3e0; border-left:5px solid #fb8c00;
       padding:1em; margin:1em 0; border-radius:6px;
