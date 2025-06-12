@@ -2,63 +2,101 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tennis First Cup — Положение турнира</title>
   <style>
-    /* ========== Сброс отступов и базовые стили ========== */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      width: 100%; height: 100%;
-      background-color: #e07b39; /* цвет глиняного корта */
-      display: flex; justify-content: center; align-items: center;
+    /* Базовые стили */
+    body {
+      font-size: 80%;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 1em;
+      padding: 1em;
+      line-height: 1.6;
+      background-color: #e07b39;
+      color: #333;
     }
     .container {
-      max-width: 800px; width: 100%; margin: auto;
-      background: #ffffffcc; padding: 1.5em;
-      border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      color: #333; overflow-y: auto; max-height: 100%;
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255,255,255,0.8);
+      padding: 1.5em;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      overflow-y: auto;
+      max-height: calc(100vh - 2em);
     }
-    h1, h2 { color: #1967d2; }
-    h1 { font-size: 1.8em; margin-bottom: .5em; }
-    h2 { font-size: 1.4em; margin: 1.2em 0 .5em; }
-    ul { padding-left: 1.2em; margin-bottom: 1em; }
-    /* убираем маркеры у всех списков, кроме #participants */
-    ul:not(#participants) {
+    h1, h2 {
+      color: #1967d2;
+    }
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: .5em;
+    }
+    h2 {
+      font-size: 1.4em;
+      margin: 1.2em 0 .5em;
+    }
+    ul {
       list-style: none;
-      padding-left: 1.2em; /* сохраняем отступы, если нужно */
+      margin: 0 0 1em 0;
+      padding: 0;
     }
-    
-    /* возвращаем классические маркеры только для списка участников */
+    /* Маркеры только в списке участников */
     #participants {
       list-style: disc;
-      padding-left: 1.2em;
+      margin: 1em 0 0 1em;
+      padding: 0;
     }
     .sponsor-box {
-      background: #fff3e0; border-left:5px solid #fb8c00;
-      padding:1em; margin:1em 0; border-radius:6px;
+      background: #fff3e0;
+      border-left: 5px solid #fb8c00;
+      padding: 1em;
+      margin: 1em 0;
+      border-radius: 6px;
+    }
+    .icon-kaspi { margin-left: .3em; }
+    .icon-cash  { margin-left: .3em; }
+    /* Кнопка «Показать адрес» */
+    .address-btn {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 0.5em;
+      padding: 0.2em 0.5em;
+      background: #ffffff;
+      border: 1px solid #1967d2;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #1967d2;
+      font-size: 0.9em;
+    }
+    .address-btn img {
+      display: inline-block;
+      margin-right: 0.3em;
+      width: 16px;
+      height: 16px;
     }
     @media (max-width:600px) {
-      h1 { font-size:1.5em; }
-      h2 { font-size:1.2em; }
-      body { padding:0.5em; }
+      body { margin: .5em; padding: .5em; }
+      h1   { font-size:1.5em; }
+      h2   { font-size:1.2em; }
     }
-    /* ========== Список участников ========== */
-    #participants { list-style:none; padding-left:0; margin-top:1em; }
-    #participants li { margin:.5em 0; line-height:1.4; }
-    .icon-kaspi { margin-left:.3em; }
-    .icon-cash  { margin-left:.3em; }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>🎾 Tennis First Cup</h1>
-    <p><strong>Турнир для игроков-любителей 18+ (уровень до NTRP 3.5)</strong></p>
+    <p><strong>Одиночный турнир для игроков-любителей 18+ (уровень до NTRP 3.5)</strong></p>
 
     <h2>📍 Общая информация</h2>
     <ul>
-      <li><strong>Дата:</strong> 15 июня</li>
-      <li><strong>Место:</strong> Теннисный клуб «Максат» (грунт)</li>
+      <li><strong>Формат:</strong> одиночный, смешанный (женщины и мужчины)</li>
+      <li><strong>Дата:</strong> 15 июня, 16:00</li>
+      <li>
+        <strong>Место:</strong> Теннисный клуб «Максат» (грунт)
+        <a href="https://go.2gis.com/Z8YDx" target="_blank" class="address-btn">
+          <img src="https://d-assets.2gis.ru/favicon.png" alt="2GIS">Показать адрес
+        </a>
+      </li>
       <li><strong>Возраст:</strong> 18+</li>
       <li><strong>Уровень:</strong> от NTRP 2.5 до 3.5</li>
       <li><strong>Организаторы:</strong> Асхат — +7 747 199 21 23, Бекарыс — +7 777 381 10 89</li>
@@ -76,10 +114,10 @@
 
     <h2>⚖️ Правила и дисциплина</h2>
     <ul>
-      <li>Судейство по запросу</li>
+      <li>Судейство — по запросу</li>
       <li>Каждые 5 минут опоздания — минус 1 гейм</li>
       <li>После 20 минут опоздания — техническое поражение</li>
-      <li>Отказ от участия — не позже чем за 2 дня до турнира</li>
+      <li>Отказ — не позже чем за 2 дня до турнира</li>
       <li>Обязателен спортивный этикет и уважение к соперникам</li>
     </ul>
 
@@ -90,11 +128,24 @@
     </ul>
 
     <div class="sponsor-box">
-      <strong>🎁 Призы от спонсора — компании Technifibre:</strong>
+      <strong>🎁 Призы от спонсора — Technifibre:</strong>
       <ul>
-        <li>Все призовые места получают <strong>сертификаты</strong> на теннисную продукцию</li>
-        <li>Каждый призёр, включая 3-е место Фьючерс, получает <strong>полотенце</strong> Technifibre</li>
+        <li>Сертификаты на теннисную продукцию</li>
+        <li>Полотенца Technifibre (3-е место Фьючерс тоже)</li>
       </ul>
+    </div>
+
+    <h2>🏅 Дополнительный приз</h2>
+    <div class="sponsor-box">
+      <p><strong>Игрок, занявший 5-е место в группе,</strong> получает именной сертификат на две групповые тренировки с теннисной машинкой.</p>
+      <p>
+        Тренировки проходят в теннисном клубе Jan Dosym
+        <a href="https://go.2gis.com/amI1L" target="_blank" class="address-btn">
+          <img src="https://d-assets.2gis.ru/favicon.png" alt="2GIS">Показать адрес
+        </a>
+      </p>
+      <p>Тренировки проходят по субботам и воскресеньям в 07:00, продолжительность — 2 часа. Формат: отработка ударов и мини-игры.</p>
+      <p><em>Внимание: будут введены новые часы проведения для удобства участников.</em></p>
     </div>
 
     <p><strong>Мастерс:</strong></p>
@@ -113,13 +164,13 @@
 
     <h2>📸 Фото и видео</h2>
     <div class="sponsor-box">
-      Во время турнира будет работать <strong>мобилограф</strong>, который сделает фото- и видеоотчёт. Участники получат памятные кадры и итоговый ролик.
+      Во время турнира работает <strong>мобилограф</strong> — фото- и видеоотчёт для участников.
     </div>
 
     <h2>📝 Регистрация</h2>
     <ul>
       <li>Запись до <strong>13 июня</strong></li>
-      <li>WhatsApp: Асхат — +7 747 **** 21 23, Бекарыс — +7 777 **** 10 89</li>
+      <li>WhatsApp: Асхат — +7 747 199 21 23, Бекарыс — +7 777 381 10 89</li>
       <li>Количество участников ограничено — <strong>20 человек</strong></li>
     </ul>
 
@@ -133,38 +184,41 @@
     (function(){
       const SHEET_ID = '1-bu83d91x0RGodxCtpYEIUffjk8OUZiYWFofUXBCefI';
       const GID      = '0';
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+      const csvUrl   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
 
-      // маскирование телефона: показывать только последние 4 цифры
-      function maskPhone(s) {
+      function formatMaskPhone(s) {
+        const d = s.replace(/\D/g, '');
+        if (d.length >= 11) {
+          const c  = d[0];
+          const a1 = d[1], a2 = d[2];
+          const group3 = d.slice(9,11);
+          return `+${c} (${a1}${a2}*) ***-**-${group3}`;
+        }
         return s.replace(/.(?=.{4,}$)/g, '*');
       }
 
       fetch(csvUrl)
         .then(res => res.ok ? res.text() : Promise.reject(res.statusText))
         .then(text => {
-          const rows = text.trim().split('\n').map(r => r.split(','));
+          const rows   = text.trim().split('\n').map(r => r.split(','));
           const header = rows.shift().map(h => h.replace(/"/g,'').trim());
           const idxName   = header.indexOf('Имя');
           const idxNumber = header.indexOf('Номер');
           const idxFee    = header.indexOf('Взносы');
-          const ul = document.getElementById('participants');
-          ul.innerHTML = '';
+          const ul       = document.getElementById('participants');
+          ul.innerHTML   = '';
 
           let count = 1;
           rows.forEach(cells => {
             const name   = (cells[idxName]   || '').trim();
             const number = (cells[idxNumber] || '').trim();
             const fee    = (cells[idxFee]    || '').trim();
-            if (!name && !number) return;  // пропустить пустые строки
+            if (!name && !number) return;
 
-            // маскируем номер
-            const maskedNumber = number ? maskPhone(number) : '';
-
-            // выбираем эмодзи для взносов
+            const maskedNumber = number ? formatMaskPhone(number) : '';
             let icon = '';
             if (!fee) {
-              icon = ' ⌛';               // платёж не сделан
+              icon = ' ⌛';
             } else if (/Kaspi/i.test(fee)) {
               icon = '<span class="icon-kaspi">🏦</span>';
             } else if (/Нал/i.test(fee)) {
