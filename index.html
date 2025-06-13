@@ -41,8 +41,8 @@
       margin: 0 0 1em 0;
       padding: 0;
     }
-    /* Маркеры только в списке участников */
-    #participants {
+    /* Маркеры только в списках участников и листа ожидания */
+    #participants, #waitlist {
       list-style: disc;
       margin: 1em 0 0 1em;
       padding: 0;
@@ -56,7 +56,6 @@
     }
     .icon-kaspi { margin-left: .3em; }
     .icon-cash  { margin-left: .3em; }
-    /* Кнопка «Показать адрес» */
     .address-btn {
       display: inline-flex;
       align-items: center;
@@ -74,6 +73,10 @@
       margin-right: 0.3em;
       width: 16px;
       height: 16px;
+    }
+    /* Отступ после списка участников */
+    .bottom-spacer {
+      height: 150px;
     }
     @media (max-width:600px) {
       body { margin: .5em; padding: .5em; }
@@ -124,7 +127,7 @@
     <h2>💰 Взнос и призы</h2>
     <ul>
       <li><strong>Взнос:</strong> 18 000 ₸</li>
-      <li><strong>Общий призовой фонд:</strong> 140 000 ₸</li>
+      <li><strong>Призовой фонд:</strong> 140 000 ₸</li>
     </ul>
 
     <div class="sponsor-box">
@@ -133,6 +136,12 @@
         <li>Сертификаты на теннисную продукцию</li>
         <li>Полотенца Technifibre (3-е место Фьючерс тоже)</li>
       </ul>
+      <p>
+        <strong>Amazing Tennis</strong> — официальный представитель Technifibre в Казахстане.
+        <a href="https://2gis.kz/almaty/geo/70000001098950982" target="_blank" class="address-btn">
+          <img src="https://d-assets.2gis.ru/favicon.png" alt="2GIS">Amazing Tennis
+        </a>
+      </p>
     </div>
 
     <h2>🏅 Дополнительный приз</h2>
@@ -175,9 +184,12 @@
     </ul>
 
     <h2>👥 Список участников</h2>
-    <ul id="participants">
-      <li>Загрузка...</li>
-    </ul>
+    <ul id="participants"></ul>
+
+    <h2>Лист ожидания</h2>
+    <ul id="waitlist"></ul>
+
+    <div class="bottom-spacer"></div>
   </div>
 
   <script>
@@ -189,10 +201,10 @@
       function formatMaskPhone(s) {
         const d = s.replace(/\D/g, '');
         if (d.length >= 11) {
-          const c  = d[0];
-          const a1 = d[1], a2 = d[2];
-          const group3 = d.slice(9,11);
-          return `+${c} (${a1}${a2}*) ***-**-${group3}`;
+          const c     = d[0];
+          const a1    = d[1], a2    = d[2];
+          const last2 = d.slice(-2);
+          return `+${c} (${a1}${a2}*) ***-**-${last2}`;
         }
         return s.replace(/.(?=.{4,}$)/g, '*');
       }
@@ -205,10 +217,13 @@
           const idxName   = header.indexOf('Имя');
           const idxNumber = header.indexOf('Номер');
           const idxFee    = header.indexOf('Взносы');
-          const ul       = document.getElementById('participants');
-          ul.innerHTML   = '';
+          const ulMain   = document.getElementById('participants');
+          const ulWait   = document.getElementById('waitlist');
+          ulMain.innerHTML = '';
+          ulWait.innerHTML = '';
 
-          let count = 1;
+          let mainCount = 1;
+          let waitCount = 1;
           rows.forEach(cells => {
             const name   = (cells[idxName]   || '').trim();
             const number = (cells[idxNumber] || '').trim();
@@ -228,17 +243,25 @@
             }
 
             const li = document.createElement('li');
-            li.innerHTML = `${count++}. <strong>${name}</strong> — ${maskedNumber}${icon}`;
-            ul.appendChild(li);
+            if (mainCount <= 20) {
+              li.innerHTML = `${mainCount++}. <strong>${name}</strong> — ${maskedNumber}${icon}`;
+              ulMain.appendChild(li);
+            } else {
+              li.innerHTML = `${waitCount++}. <strong>${name}</strong> — ${maskedNumber}${icon}`;
+              ulWait.appendChild(li);
+            }
           });
 
-          if (count === 1) {
-            ul.innerHTML = '<li>Список участников пуст</li>';
+          if (mainCount === 1) {
+            ulMain.innerHTML = '<li>Список участников пуст</li>';
+          }
+          if (waitCount === 1) {
+            ulWait.innerHTML = '<li>Лист ожидания пуст</li>';
           }
         })
         .catch(err => {
-          const ul = document.getElementById('participants');
-          ul.innerHTML = '<li>Не удалось загрузить список участников</li>';
+          document.getElementById('participants').innerHTML = '<li>Не удалось загрузить список участников</li>';
+          document.getElementById('waitlist').innerHTML   = '<li>Не удалось загрузить лист ожидания</li>';
           console.error(err);
         });
     })();
