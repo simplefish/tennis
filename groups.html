@@ -164,7 +164,7 @@
       font-weight: bold;
     }
     .points {
-      width: 2em;
+      width: 3em;
       text-align: right;
       font-weight: bold;
     }
@@ -236,6 +236,16 @@
       D: ['Асель Нурмухамет','Даурен Жумабай','Веденский Дмитрий','Джанысбаев Дамир','Ахметжанов Салим']
     };
 
+    // Множество женских имён
+    const femalePlayers = new Set([
+      'Джанысбаева Алия',
+      'Бабатаева Зарина',
+      'Айнур Таникенова',
+      'Асель Нурмухамет',
+      'Ефремова Ксения',
+      'Айжан Габджанова'
+    ]);
+
     // Состав групп
     const gl = document.getElementById('group-list');
     Object.entries(groups).forEach(([g, pls]) => {
@@ -294,6 +304,15 @@
               <span class="points"></span>
             </div>`;
           ml.appendChild(div);
+
+          // Добавляем "Фора 15/0" рядом с женщиной, если соперник — мужчина
+          const players = div.querySelectorAll('.player');
+          const [first, second] = players;
+          if (femalePlayers.has(p1) && !femalePlayers.has(p2)) {
+            first.querySelector('.points').textContent = 'Ф 15/0';
+          } else if (femalePlayers.has(p2) && !femalePlayers.has(p1)) {
+            second.querySelector('.points').textContent = 'Ф 15/0';
+          }
         });
       });
     });
@@ -317,10 +336,13 @@
   'Даурен Жумабай|Ахметжанов Салим': [4,3],
 
   // Новые результаты
-  
   'Ефремова Ксения|Синдонис Илья': [1,4],
   'Беспаев Наиль|Молдакунов Мурат': [2,4],
-  'Айнур Таникенова|Герасименко Александр': [1,4]
+  'Айнур Таникенова|Герасименко Александр': [1,4],
+
+  // Добавленные по запросу
+  'Джанысбаева Алия|Булатов Бекзат': [4,2],
+  'Валерий Ли|Иван Девицкий': [4,1]
 };
 
     document.querySelectorAll('.match').forEach(matchDiv => {
