@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎾 Tennis First Cup — Групповой этап</title>
+  <style>
+    :root {
+      --clay: #b7643c;
+      --sand-light: #fff8f0;
+      --border: #e0c9b0;
+      --bg-container: transparent;
+      --text-dark: #111111;
+      --match-text: #111111;
+    }
+    body {
+      margin: 1em;
+      background-color: var(--clay);
+      color: var(--text-dark);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 80%;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      margin: 1em 0 .5em;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: var(--bg-container);
+      padding: 1.5em;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      overflow-y: auto;
+      max-height: calc(100vh - 2em);
+    }
+    /* Состав групп */
+    #group-list {
+      display: flex;
+      flex-direction: column;
+      gap: .6em;
+      margin: 0 0 1em 0;
+      padding: 0;
+    }
+    #group-list li {
+      background: var(--sand-light);
+      border-radius: 8px;
+      padding: .4em .8em;
+      color: var(--text-dark);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      list-style: none;
+    }
+    /* Скрыть блок первой игры */
+    .group-block .first-game {
+      display: none;
+    }
+    /* Расписание — карточки */
+    #schedule-list {
+      display: flex;
+      flex-direction: column;
+      gap: .6em;
+      margin-bottom: 1em;
+      padding: 0;
+    }
+    .schedule-card {
+      background: var(--sand-light);
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .6em .8em;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      color: var(--text-dark);
+      gap: 1em;
+      flex-wrap: nowrap;
+    }
+    .schedule-card .left {
+      flex: 0 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: .2em;
+    }
+    .schedule-card .right {
+      flex: 0 1 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: .2em;
+      font-weight: bold;
+    }
+    .schedule-card .icon {
+      font-size: 1.1em;
+      margin-right: .3em;
+    }
+    /* Групповые блоки и матчи */
+    .group-block { margin: 1.2em 0; }
+    .match-list {
+      display: flex;
+      flex-direction: column;
+      gap: .6em;
+    }
+    .match {
+      background: var(--sand-light);
+      border-radius: 8px;
+      overflow: hidden;
+      color: var(--match-text);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .player {
+      display: flex;
+      align-items: center;
+      padding: .4em .8em;
+    }
+    .player img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: .6em;
+    }
+    .name { flex: 1; font-weight: 600; }
+    .win-indicator { font-size: 1.2em; margin-right: .6em; }
+    .sets {
+      width: 2em;
+      text-align: center;
+      margin: 0 1em;
+      font-feature-settings: "tnum";
+    }
+    .sets .set {
+      font-weight: bold;
+    }
+    .points {
+      width: 2em;
+      text-align: right;
+      font-weight: bold;
+    }
+    @media (max-width:600px) {
+      body { margin: .5em; }
+      .player { padding: .3em .5em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎾 Tennis First Cup — Групповой этап</h1>
+
+    <h2>Состав групп</h2>
+    <ul id="group-list"></ul>
+
+    <h2>Расписание первых игр</h2>
+    <div id="schedule-list"></div>
+
+    <div class="group-block">
+      <h2>Группа A</h2>
+      <p class="first-game"></p>
+      <div class="match-list"></div>
+    </div>
+    <div class="group-block">
+      <h2>Группа B</h2>
+      <p class="first-game"></p>
+      <div class="match-list"></div>
+    </div>
+    <div class="group-block">
+      <h2>Группа C</h2>
+      <p class="first-game"></p>
+      <div class="match-list"></div>
+    </div>
+    <div class="group-block">
+      <h2>Группа D</h2>
+      <p class="first-game"></p>
+      <div class="match-list"></div>
+    </div>
+  </div>
+
+  <script>
+    // Круговой генератор
+    function roundRobin(players) {
+      const arr = players.slice();
+      if (arr.length % 2) arr.push(null);
+      const n = arr.length,
+            rounds = [];
+      for (let r = 0; r < n - 1; r++) {
+        const pairs = [];
+        for (let i = 0; i < n/2; i++) {
+          const p1 = arr[i], p2 = arr[n - 1 - i];
+          if (p1 && p2) pairs.push([p1, p2]);
+        }
+        rounds.push(pairs);
+        // вращаем всех кроме первого
+        arr.splice(1, 0, arr.pop());
+      }
+      return rounds;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const groups = {
+        A: ['Джанысбаева Алия','Бабатаева Зарина','Новгородов Евгений','Булатов Бекзат','Дегай Анатолий'],
+        B: ['Айнур Таникенова','Асель Нурмухамет','Валерий Ли','Герасименко Александр','Иван Девицкий'],
+        C: ['Ефремова Ксения','Шопен Аскар','Молдакунов Мурат','Синдонис Илья','Беспаев Наиль'],
+        D: ['Даурен Жумабай','Джанысбаев Дамир','Веденский Дмитрий','Айжан Габджанова','Ахметжанов Салим']
+      };
+
+      // Состав групп
+      const gl = document.getElementById('group-list');
+      Object.entries(groups).forEach(([g, pls]) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>Группа ${g}:</strong> ${pls.join(', ')}`;
+        gl.appendChild(li);
+      });
+
+      // Расписание первых игр (не меняется)
+      const sched = [
+        {court:1,grp:'A',p1:groups.A[0],p2:groups.A[1],time:'16:00'},
+        {court:2,grp:'B',p1:groups.B[2],p2:groups.B[1],time:'16:00'},
+        {court:3,grp:'C',p1:groups.C[3],p2:groups.C[0],time:'16:00'},
+        {court:1,grp:'D',p1:groups.D[2],p2:groups.D[0],time:'17:40'}
+      ];
+      const sl = document.getElementById('schedule-list');
+      sched.forEach(r => {
+        let [h,m] = r.time.split(':').map(Number);
+        m -= 10; if (m<0) { m += 60; h--; }
+        const arrive = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+        const card = document.createElement('div');
+        card.className = 'schedule-card';
+        card.innerHTML = `
+          <div class="left">
+            <span>${r.p1}</span>
+            <span>${r.p2}</span>
+          </div>
+          <div class="right">
+            <div><span class="icon">🎾</span><span>Корт ${r.court}</span></div>
+            <div><span class="icon">⏰</span><span>${arrive}</span></div>
+          </div>`;
+        sl.appendChild(card);
+      });
+
+      // Блоки матчей: теперь round-robin
+      document.querySelectorAll('.group-block').forEach(block => {
+        const grp = block.querySelector('h2').textContent.slice(-1);
+        const rounds = roundRobin(groups[grp]);
+        const ml = block.querySelector('.match-list');
+        rounds.forEach(round => {
+          round.forEach(([p1, p2]) => {
+            const div = document.createElement('div');
+            div.className = 'match';
+            div.innerHTML = `
+              <div class="player">
+                <img src="flag-placeholder.png" alt="">
+                <span class="name">${p1}</span>
+                <span class="win-indicator"></span>
+                <span class="sets"><span class="set"></span></span>
+                <span class="points"></span>
+              </div>
+              <div class="player">
+                <img src="flag-placeholder.png" alt="">
+                <span class="name">${p2}</span>
+                <span class="win-indicator"></span>
+                <span class="sets"><span class="set"></span></span>
+                <span class="points"></span>
+              </div>`;
+            ml.appendChild(div);
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
