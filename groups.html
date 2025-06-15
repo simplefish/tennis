@@ -210,13 +210,12 @@
     </div>
   </div>
 
-  <script>
+<script>
   // Круговой генератор
   function roundRobin(players) {
     const arr = players.slice();
     if (arr.length % 2) arr.push(null);
-    const n = arr.length,
-          rounds = [];
+    const n = arr.length, rounds = [];
     for (let r = 0; r < n - 1; r++) {
       const pairs = [];
       for (let i = 0; i < n/2; i++) {
@@ -224,7 +223,6 @@
         if (p1 && p2) pairs.push([p1, p2]);
       }
       rounds.push(pairs);
-      // вращаем всех кроме первого
       arr.splice(1, 0, arr.pop());
     }
     return rounds;
@@ -246,43 +244,32 @@
       gl.appendChild(li);
     });
 
-    // Расписание первых игр — добавляем вторую игру для группы D
-const sl = document.getElementById('schedule-list');
-document.querySelectorAll('.group-block').forEach((block, idx) => {
-  const grp = block.querySelector('h2').textContent.slice(-1);
-  const rounds = roundRobin(groups[grp]);
-  const firstRound = rounds[0]; // первый раунд — массив пар
+    // Расписание первых игр
+    const sl = document.getElementById('schedule-list');
+    document.querySelectorAll('.group-block').forEach((block, idx) => {
+      const grp = block.querySelector('h2').textContent.slice(-1);
+      const rounds = roundRobin(groups[grp]);
+      const [p1, p2] = rounds[0][0]; // первая пара
+      const time = '16:00';
+      let [h, m] = time.split(':').map(Number);
+      m -= 10; if (m < 0) { m += 60; h--; }
+      const arrive = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      const court = (idx % 3) + 1;
+      const card = document.createElement('div');
+      card.className = 'schedule-card';
+      card.innerHTML = `
+        <div class="left">
+          <span>${p1}</span>
+          <span>${p2}</span>
+        </div>
+        <div class="right">
+          <div><span class="icon">🎾</span><span>Корт ${court}</span></div>
+          <div><span class="icon">⏰</span><span>${arrive}</span></div>
+        </div>`;
+      sl.appendChild(card);
+    });
 
-  firstRound.forEach((pair, pairIdx) => {
-    // для групп A–C берём только первую пару
-    if (grp !== 'D' && pairIdx > 0) return;
-
-    const [p1, p2] = pair;
-    // время группы D сдвинуто, остальных — 16:00
-    const time = grp === 'D' ? '16:00' : '16:00';
-    let [h, m] = time.split(':').map(Number);
-    m -= 10; if (m < 0) { m += 60; h--; }
-    const arrive = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-    var court = (idx % 5) + 3; 
-    if (grp === 'D' && pairIdx > 0) court = 6 + (idx % 2);
-
-
-    const card = document.createElement('div');
-    card.className = 'schedule-card';
-    card.innerHTML = `
-      <div class="left">
-        <span>${p1}</span>
-        <span>${p2}</span>
-      </div>
-      <div class="right">
-        <div><span class="icon">🎾</span><span>Корт ${court}</span></div>
-        <div><span class="icon">⏰</span><span>${arrive}</span></div>
-      </div>`;
-    sl.appendChild(card);
-  });
-});
-
-    // Блоки матчей: полное round-robin-расписание
+    // Блоки матчей — полный round-robin
     document.querySelectorAll('.group-block').forEach(block => {
       const grp = block.querySelector('h2').textContent.slice(-1);
       const rounds = roundRobin(groups[grp]);
@@ -309,6 +296,56 @@ document.querySelectorAll('.group-block').forEach((block, idx) => {
           ml.appendChild(div);
         });
       });
+    });
+
+    // Результаты сыгранных матчей
+   const results = {
+  'Шопен Аскар|Беспаев Наиль': [4,2],
+  'Илья Синдонис Илья|Молдакунов Мурат': [4,2],
+  'Веденский Дмитрий|Джанысбаев Дамир': [4,2],
+  'Иван Девицкий|- Акылбек': [4,0],
+  'Ефремова Ксения|Беспаев Наиль': [2,4],
+  'Дегай Анатолий|Бабатаева Зарина': [4,2],
+  'Валерий Ли|Герасименко Александр': [4,0],
+  'Асель Нурмухамет|Ахметжанов Салим': [1,4],
+  'Новгородов Евгений|Булатов Бекзат': [4,1],
+  'Даурен Жумабай|Веденский Дмитрий': [0,4],
+  'Молдакунов Мурат|Шопен Аскар': [4,2],
+  'Асель Нурмухамет|Джанысбаев Дамир': [4,2],
+  '- Акылбек|Айнур Таникенова': [4,2],
+  'Дегай Анатолий|Джанысбаева Алия': [4,2],
+  'Даурен Жумабай|Ахметжанов Салим': [4,3],
+
+  // Новые результаты
+  
+  'Ефремова Ксения|Синдонис Илья': [1,4],
+  'Беспаев Наиль|Молдакунов Мурат': [2,4],
+  'Айнур Таникенова|Герасименко Александр': [1,4]
+};
+
+    document.querySelectorAll('.match').forEach(matchDiv => {
+      const [pl1, pl2] = matchDiv.querySelectorAll('.name');
+      const key1 = `${pl1.textContent}|${pl2.textContent}`;
+      const key2 = `${pl2.textContent}|${pl1.textContent}`;
+      const setEls = matchDiv.querySelectorAll('.set');
+      const winEls = matchDiv.querySelectorAll('.win-indicator');
+      const ptsEls = matchDiv.querySelectorAll('.points');
+      let score;
+      if (results[key1]) {
+        score = results[key1];
+        setEls[0].textContent = score[0];
+        setEls[1].textContent = score[1];
+        winEls[ score[0] > score[1] ? 0 : 1 ].textContent = '👑';
+      } else if (results[key2]) {
+        score = results[key2];
+        setEls[0].textContent = score[1];
+        setEls[1].textContent = score[0];
+        winEls[ score[1] > score[0] ? 0 : 1 ].textContent = '👑';
+      } else {
+        // не сыгранные
+        setEls.forEach(el => el.textContent = '-');
+        ptsEls.forEach(el => el.textContent = '⌛');
+      }
     });
   });
 </script>
