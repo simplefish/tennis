@@ -94,6 +94,24 @@
     .bottom-spacer {
       height: 150px;
     }
+    /* Плавающая кнопка */
+    .floating-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      color: #000000;
+      padding: 0.8em 1.2em;
+      border-radius: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+      z-index: 1000;
+    }
     @media (max-width:600px) {
       body { margin: .5em; padding: .5em; }
       h1   { font-size:1.5em; }
@@ -207,6 +225,11 @@
 
     <div class="bottom-spacer"></div>
   </div>
+
+  <!-- Плавающая кнопка -->
+  <a href="https://simplefish.github.io/tennis/groups.html" class="floating-btn" target="_blank">
+    🎾 Групповой этап | Список игроков и игр
+  </a>
 
   <script>
     (function(){
